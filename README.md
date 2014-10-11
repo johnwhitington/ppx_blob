@@ -9,6 +9,8 @@ without the need to respect OCaml's lexical conventions.
 To build
 --------
 
+Requires OCaml 4.02 or above, and ppx_tools installed.
+
 Run `make` in the top directory. Then run `make` in the `examples` directory.
 Now run the `quine` executable.
 
