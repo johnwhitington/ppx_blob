@@ -1,3 +1,4 @@
+(* Based on ppx_getenv, the work of P. Zotov *)
 open Ast_mapper
 open Ast_helper
 open Asttypes
