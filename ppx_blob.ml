@@ -1,4 +1,3 @@
-(* Based on ppx_getenv, the work of P. Zotov *)
 open Ast_mapper
 open Ast_helper
 open Asttypes
@@ -14,21 +13,21 @@ let getblob ~loc s =
    with
     _ -> raise (Location.Error (Location.error ~loc ("[%blob] could not find or load file " ^ s)))
 
-let getblob_mapper argv =
-  (* Our getenv_mapper only overrides the handling of expressions in the default mapper. *)
+let blob_mapper argv =
+  (* Our blob_mapper only overrides the handling of expressions in the default mapper. *)
   { default_mapper with
     expr = fun mapper expr ->
       match expr with
       (* Is this an extension node? *)
       | { pexp_desc =
-          (* Should have name "getenv". *)
+          (* Should have name "blob". *)
           Pexp_extension ({ txt = "blob"; loc }, pstr)} ->
         begin match pstr with
         | (* Should have a single structure item, which is evaluation of a constant string. *)
           PStr [{ pstr_desc =
                   Pstr_eval ({ pexp_loc  = loc;
                                pexp_desc = Pexp_constant (Const_string (sym, None))}, _)}] ->
-          (* Replace with a constant string with the value from the environment. *)
+          (* Replace with the contents of the file. *)
           Exp.constant ~loc (Const_string (getblob ~loc sym, None))
         | _ ->
           raise (Location.Error (
@@ -38,5 +37,5 @@ let getblob_mapper argv =
       | x -> default_mapper.expr mapper x;
   }
 
-let () = register "blob" getblob_mapper
+let () = register "blob" blob_mapper
 

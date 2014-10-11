@@ -14,10 +14,4 @@ Requires OCaml 4.02 or above, and ppx_tools installed.
 Run `make` in the top directory. Then run `make` in the `examples` directory.
 Now run the `quine` executable.
 
-Credits
--------
-
-A simple modification of the `ppx_getenv` example by Peter Zotov:
-
-http://www.github.com/whitequark/ppx_getenv
 
