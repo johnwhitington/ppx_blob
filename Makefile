@@ -1,6 +1,6 @@
 SOURCES = ppx_blob.ml
 
-PACKS = ppx_tools 
+PACKS = compiler-libs.common 
 
 RESULT = ppx_blob
 
@@ -11,7 +11,7 @@ OCAMLLDFLAGS = -g
 all : native-code
 
 install :
-	ocamlfind install ppx_blob ppx_blob
+	ocamlfind install ppx_blob META ppx_blob
 
 -include OCamlMakefile
 
