@@ -38,5 +38,5 @@ let getblob_mapper argv =
       | x -> default_mapper.expr mapper x;
   }
 
-let () = register "getblob" getblob_mapper
+let () = register "blob" getblob_mapper
 
