@@ -1,0 +1,5 @@
+name="ppx_blob"
+description="Include a file as a string at compile time"
+version="0.1"
+requires="ppx_tools"
+ppx="./ppx_blob"

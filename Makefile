@@ -10,5 +10,8 @@ OCAMLLDFLAGS = -g
 
 all : native-code
 
+install :
+	ocamlfind install ppx_blob ppx_blob
+
 -include OCamlMakefile
 
