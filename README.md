@@ -17,5 +17,5 @@ Now run the `quine` executable.
 To install
 ----------
 
-Run `make install' in the top directory once `make' has been run.
+Run `make install` in the top directory once `make` has been run.
 
