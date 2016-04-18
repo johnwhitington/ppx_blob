@@ -1,3 +1,6 @@
+OCAMLFIND_IGNORE_DUPS_IN = $(shell ocamlfind query compiler-libs)
+export OCAMLFIND_IGNORE_DUPS_IN
+
 SOURCES = ppx_blob.ml
 
 PACKS = ppx_tools
