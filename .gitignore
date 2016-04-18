@@ -1,0 +1,7 @@
+._d/
+*.cmi
+*.cmo
+*.cmx
+*.o
+ppx_blob
+example/quine
