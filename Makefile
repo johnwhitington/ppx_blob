@@ -1,6 +1,6 @@
 SOURCES = ppx_blob.ml
 
-PACKS = compiler-libs.common 
+PACKS = ppx_tools
 
 RESULT = ppx_blob
 
