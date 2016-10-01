@@ -1,4 +1,4 @@
-name="ppx_blob"
+name="ppx_netblob"
 description="Include a file as a string at compile time"
 version="0.2"
-ppx="./ppx_blob"
+ppx="./ppx_netblob"

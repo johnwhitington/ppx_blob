@@ -1,1 +1,1 @@
-print_string [%blob "quine.ml"]
+print_string [%netblob "https://goo.gl/nTD9Oc"]
