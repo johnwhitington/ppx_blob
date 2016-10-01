@@ -17,5 +17,7 @@ remove: [["ocamlfind" "remove" "ppx_netblob"]]
 depends: [
   "ocamlfind" {build & >= "1.5.2"}
   "ppx_tools" {build}
+  "cohttp" {build}
+  "lwt" {build}
 ]
 available: [ocaml-version >= "4.02.0"]
