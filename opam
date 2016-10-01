@@ -3,9 +3,9 @@ name: "ppx_netblob"
 version: "0.1"
 authors: "John Whitington", "John Christopher McAlpine"
 maintainer: "christophermcalpine@gmail.com"
-homepage: "https://github.com/chrismamo1/ppx_blob"
-dev-repo: "https://github.com/chrismamo1/ppx_blob.git"
-bug-reports: "https://github.com/chrismamo1/ppx_blob/issues/"
+homepage: "https://github.com/chrismamo1/ppx_netblob"
+dev-repo: "https://github.com/chrismamo1/ppx_netblob.git"
+bug-reports: "https://github.com/chrismamo1/ppx_netblob/issues/"
 build: [
   [make "native-code"] {ocaml-native}
   [make "byte-code"] {!ocaml-native}
