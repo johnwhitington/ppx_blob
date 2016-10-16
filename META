@@ -1,4 +1,4 @@
 name="ppx_netblob"
-description="Include a file as a string at compile time"
-version="0.2"
+description="Include a resource from the net as a string at compile time"
+version="1.0"
 ppx="./ppx_netblob"
