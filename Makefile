@@ -3,7 +3,7 @@ export OCAMLFIND_IGNORE_DUPS_IN
 
 SOURCES = ppx_netblob.ml
 
-PACKS = ppx_tools cohttp.lwt lwt
+PACKS = ppx_tools cohttp.lwt lwt ppx_tools.metaquot
 
 RESULT = ppx_netblob
 

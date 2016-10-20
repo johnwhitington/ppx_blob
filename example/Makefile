@@ -2,6 +2,7 @@ SOURCES = quine.ml
 
 #Uncomment this, and remove -ppx ../ppx_netblob below to use the installed version
 #PACKS = ppx_netblob
+PACKS = cohttp.lwt
 
 RESULT = quine
 
