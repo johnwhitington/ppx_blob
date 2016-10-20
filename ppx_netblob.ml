@@ -48,6 +48,17 @@ let getnetblob ~loc s =
   Lwt_main.run (get_body s)
 
 let getnetblob_generator ~loc s =
+  (* start by testing to see if [s] is a reachable resource at compile-time *)
+  let () =
+    try
+      ignore(getnetblob ~loc s)
+    with _ ->
+      Printf.printf
+        "WARNING: ppx_netblob: there was a problem trying to fetch the resource \
+        \"%s\" at compile-time, this could be a warning that it won't be \
+        available at runtime, either.\n"
+        s
+  in
   let s = Exp.constant (Const_string (s, None)) in
   [%expr
     let open Cohttp in
