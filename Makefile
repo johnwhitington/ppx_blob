@@ -1,11 +1,11 @@
 OCAMLFIND_IGNORE_DUPS_IN = $(shell ocamlfind query compiler-libs)
 export OCAMLFIND_IGNORE_DUPS_IN
 
-SOURCES = ppx_blob.ml
+SOURCES = ppx_netblob.ml
 
-PACKS = ppx_tools
+PACKS = ppx_tools cohttp.lwt lwt ppx_tools.metaquot
 
-RESULT = ppx_blob
+RESULT = ppx_netblob
 
 OCAMLNCFLAGS = -g -w -3
 OCAMLBCFLAGS = -g -w -3
@@ -14,7 +14,7 @@ OCAMLLDFLAGS = -g
 all : native-code
 
 install :
-	ocamlfind install ppx_blob META ppx_blob
+	ocamlfind install ppx_netblob META ppx_netblob
 
 -include OCamlMakefile
 

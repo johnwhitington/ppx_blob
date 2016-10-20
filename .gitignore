@@ -3,5 +3,5 @@
 *.cmo
 *.cmx
 *.o
-ppx_blob
+ppx_netblob
 example/quine
