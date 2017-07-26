@@ -1,47 +1,39 @@
-open Ast_mapper
-open Ast_helper
-open Asttypes
-open Parsetree
-open Longident
+open Migrate_parsetree
+open Ast_404
 
-let getblob ~loc s =
+let str ?loc ?attrs s = Ast_helper.Exp.constant ?loc ?attrs (Pconst_string (s, None))
+
+let get_blob ~loc file_name =
+  let dirname = Location.absolute_path loc.Location.loc_start.pos_fname |> Filename.dirname in
+  let file_path = Filename.concat dirname file_name in
   try
-    let c = open_in_bin s in
-      let s = String.init (in_channel_length c) (fun _ -> input_char c) in
-        close_in c;
-        s
-   with
-    _ -> raise (Location.Error (Location.error ~loc ("[%blob] could not find or load file " ^ s)))
+    let c = open_in_bin file_path in
+    let s = String.init (in_channel_length c) (fun _ -> input_char c) in
+    close_in c;
+    s
+  with _ ->
+    let error = Location.error ~loc ("[%blob] could not find or load file " ^ file_path) in
+     raise (Location.Error error)
 
-let blob_mapper argv =
-  (* Our blob_mapper only overrides the handling of expressions in the default mapper. *)
+let mapper _config _cookies =
+  let default_mapper = Ast_mapper.default_mapper in
   { default_mapper with
     expr = fun mapper expr ->
       match expr with
-      (* Is this an extension node? *)
-      | { pexp_desc =
-          (* Should have name "blob". *)
-          Pexp_extension ({ txt = "blob"; loc }, pstr)} ->
-        let error () =
-          raise (Location.Error (
-                  Location.error ~loc "[%blob] accepts a filename as a string, e.g. [%blob \"file.dat\"]"))
-        in
-        begin match pstr with
-        | (* Should have a single structure item, which is evaluation of a constant string. *)
-          PStr [{ pstr_desc = Pstr_eval ({ pexp_loc = loc } as expr, _) }] ->
-            begin match Ast_convenience.get_str expr with
-            | Some sym ->
-              (* Replace with the contents of the file. *)
-              (* Have to use Ast_helper.with_default_loc to pass the location to Ast_convenience.str until
-                 https://github.com/alainfrisch/ppx_tools/pull/38 is released. *)
-              with_default_loc loc (fun () -> Ast_convenience.str (getblob ~loc sym))
-            | None -> error ()
-            end
-        | _ -> error ()
-        end
-      (* Delegate to the default mapper. *)
-      | x -> default_mapper.expr mapper x;
+      | { pexp_desc = Pexp_extension ({ txt = "blob"; loc}, pstr)} ->
+          begin match pstr with
+            | PStr [{ pstr_desc =
+                        Pstr_eval ({ pexp_loc  = loc;
+                                     pexp_desc = Pexp_constant (Pconst_string (file_name, _))}, _)}] ->
+                str (get_blob ~loc file_name)
+            | _ ->
+                raise (Location.Error (
+                  Location.error ~loc "[%blob] accepts a string, e.g. [%blob \"file.dat\"]"))
+          end
+      | other -> default_mapper.expr mapper other
   }
 
-let () = register "blob" blob_mapper
-
+let () =
+  Driver.register ~name:"ppx_blob"
+    Versions.ocaml_404
+    mapper
