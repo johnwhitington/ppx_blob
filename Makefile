@@ -7,8 +7,8 @@ PACKS = ppx_tools
 
 RESULT = ppx_blob
 
-OCAMLNCFLAGS = -g -w -3
-OCAMLBCFLAGS = -g -w -3
+OCAMLNCFLAGS = -safe-string -g -w -3
+OCAMLBCFLAGS = -safe-string -g -w -3
 OCAMLLDFLAGS = -g
 
 all : native-code
