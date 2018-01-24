@@ -5,3 +5,6 @@
 *.o
 ppx_blob
 example/quine
+_build
+.merlin
+*.install

@@ -1,20 +1,12 @@
-OCAMLFIND_IGNORE_DUPS_IN = $(shell ocamlfind query compiler-libs)
-export OCAMLFIND_IGNORE_DUPS_IN
+JBUILDER ?= jbuilder
 
-SOURCES = ppx_blob.ml
+all:
+	$(JBUILDER) build @install
 
-PACKS = ppx_tools
+test:
+	$(JBUILDER) runtest
 
-RESULT = ppx_blob
+clean:
+	rm -rf _build
 
-OCAMLNCFLAGS = -safe-string -g -w -3
-OCAMLBCFLAGS = -safe-string -g -w -3
-OCAMLLDFLAGS = -g
-
-all : native-code
-
-install :
-	ocamlfind install ppx_blob META ppx_blob
-
--include OCamlMakefile
-
+.PHONY: test all clean
