@@ -8,10 +8,14 @@ let location_errorf ~loc =
     raise (Location.Error (Location.error ~loc err))
   )
 
-let get_blob ~loc file_name =
+let find_file_path ~loc file_name =
   let dirname = Location.absolute_path loc.Location.loc_start.pos_fname |> Filename.dirname in
-  let file_path = Filename.concat dirname file_name in
+  let absolute_path = Filename.concat dirname file_name in
+  List.find Sys.file_exists [absolute_path; file_name]
+
+let get_blob ~loc file_name =
   try
+    let file_path = find_file_path ~loc file_name in
     let c = open_in_bin file_path in
     let s = String.init (in_channel_length c) (fun _ -> input_char c) in
     close_in c;
