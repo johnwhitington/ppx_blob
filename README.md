@@ -6,6 +6,8 @@ OCaml ppx to include a binary blob from a file as a string. Writing `[%blob
 compile time. This allows the inclusion of arbitary, possibly compressed, data,
 without the need to respect OCaml's lexical conventions.
 
+The filename can be relative to either the source file where `[%blob]` appears, or relative to the current working directory. If both files exist, the former takes precedence.
+
 To build
 --------
 
