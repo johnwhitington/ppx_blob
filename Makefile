@@ -1,10 +1,10 @@
-JBUILDER ?= jbuilder
+DUNE ?= dune
 
 all:
-	$(JBUILDER) build @install
+	$(DUNE) build @install @example
 
 test:
-	$(JBUILDER) runtest
+	$(DUNE) runtest
 
 clean:
 	rm -rf _build
