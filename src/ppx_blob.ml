@@ -28,11 +28,13 @@ let mapper _config _cookies =
   { default_mapper with
     expr = fun mapper expr ->
       match expr with
-      | { pexp_desc = Pexp_extension ({ txt = "blob"; loc}, pstr)} ->
+      | { pexp_desc = Pexp_extension ({ txt = "blob"; loc}, pstr); _} ->
           begin match pstr with
             | PStr [{ pstr_desc =
                         Pstr_eval ({ pexp_loc  = loc;
-                                     pexp_desc = Pexp_constant (Pconst_string (file_name, _))}, _)}] ->
+                                     pexp_desc = Pexp_constant (Pconst_string (file_name, _));
+                                     _ }, _);
+                        _ }] ->
                 str (get_blob ~loc file_name)
             | _ ->
                 location_errorf ~loc "[%%blob] accepts a string, e.g. [%%blob \"file.dat\"]"
