@@ -1,0 +1,7 @@
+(executable
+  (name quine)
+  (preprocess (pps ppx_blob)))
+
+(alias
+  (name example)
+  (deps quine.exe))

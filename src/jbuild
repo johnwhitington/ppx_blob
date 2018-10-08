@@ -1,9 +1,0 @@
-(jbuild_version 1)
-
-(library
- ((name ppx_blob)
-  (public_name ppx_blob)
-  (kind ppx_rewriter)
-  (modules ppx_blob)
-  (flags (:standard -safe-string))
-  (libraries (ocaml-migrate-parsetree))))
