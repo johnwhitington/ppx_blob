@@ -21,3 +21,9 @@ To install
 
 Run `make install` in the top directory once `make` has been run.
 
+Integration with build systems
+------------------------------
+
+**dune**
+
+Add `(preprocessor_deps filename)` to your filename stanza. See https://github.com/johnwhitington/ppx_blob/tree/master/test for an example. This will make sure the file is copied to the build directory and therefore visible to ppx_blob`.
