@@ -1,10 +1,7 @@
 ._d/
-*.cmi
-*.cmo
-*.cmx
-*.o
 ppx_blob
 example/quine
 _build
+_opam
 .merlin
 *.install

@@ -1,3 +1,5 @@
+Migrate to dune and dune-release
+
 0.4 2018-02-10
 ---------------------------------
 
