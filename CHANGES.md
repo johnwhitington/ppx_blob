@@ -1,10 +1,12 @@
+0.5 2019-12-31
+---------------------------------
+
 Migrate to dune and dune-release
 
 0.4 2018-02-10
 ---------------------------------
 
 Check if file exists relative to working directory (#9)
-
 
 0.3 2017-08-22
 ---------------------------------
