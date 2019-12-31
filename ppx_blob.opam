@@ -4,6 +4,7 @@ maintainer: "contact@coherentgraphics.co.uk"
 homepage: "https://github.com/johnwhitington/ppx_blob"
 dev-repo: "git+https://github.com/johnwhitington/ppx_blob.git"
 bug-reports: "https://github.com/johnwhitington/ppx_blob/issues/"
+doc: "https://johnwhitington.github.io/ppx_blob/"
 build: [
   ["dune" "build" "-p" name "-j" jobs]
   ["dune" "runtest" "-p" name "-j" jobs] {with-test}
