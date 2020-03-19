@@ -1,5 +1,5 @@
 open Migrate_parsetree
-open Ast_404
+open Ast_408
 
 let str ?loc ?attrs s = Ast_helper.Exp.constant ?loc ?attrs (Pconst_string (s, None))
 
@@ -44,5 +44,5 @@ let mapper _config _cookies =
 
 let () =
   Driver.register ~name:"ppx_blob"
-    Versions.ocaml_404
+    Versions.ocaml_408
     mapper
