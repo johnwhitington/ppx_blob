@@ -1,7 +1,7 @@
 open Migrate_parsetree
-open Ast_408
+open Ast_411
 
-let str ?loc ?attrs s = Ast_helper.Exp.constant ?loc ?attrs (Pconst_string (s, None))
+let str ?loc ?attrs s = Ast_helper.Exp.constant ?loc ?attrs (Ast_helper.Const.string ?loc s)
 
 let location_errorf ~loc =
   Format.ksprintf (fun err ->
@@ -32,7 +32,7 @@ let mapper _config _cookies =
           begin match pstr with
             | PStr [{ pstr_desc =
                         Pstr_eval ({ pexp_loc  = loc;
-                                     pexp_desc = Pexp_constant (Pconst_string (file_name, _));
+                                     pexp_desc = Pexp_constant (Pconst_string (file_name, _, _));
                                      _ }, _);
                         _ }] ->
                 str (get_blob ~loc file_name)
@@ -44,5 +44,5 @@ let mapper _config _cookies =
 
 let () =
   Driver.register ~name:"ppx_blob"
-    Versions.ocaml_408
+    Versions.ocaml_411
     mapper
