@@ -1,15 +1,12 @@
-open Migrate_parsetree
-open Ast_411
-
-let str ?loc ?attrs s = Ast_helper.Exp.constant ?loc ?attrs (Ast_helper.Const.string ?loc s)
-
-let location_errorf ~loc =
-  Format.ksprintf (fun err ->
-    raise (Location.Error (Location.error ~loc err))
-  )
+open Ppxlib
 
 let find_file_path ~loc file_name =
-  let dirname = Location.absolute_path loc.Location.loc_start.pos_fname |> Filename.dirname in
+  let dirname =
+    let loc_fname = loc.Location.loc_start.pos_fname in
+    if Filename.is_relative loc_fname then
+      Filename.dirname (Filename.concat (Sys.getcwd ()) loc_fname)
+    else Filename.dirname loc_fname
+  in
   let absolute_path = Filename.concat dirname file_name in
   List.find Sys.file_exists [absolute_path; file_name]
 
@@ -18,31 +15,24 @@ let get_blob ~loc file_name =
     let file_path = find_file_path ~loc file_name in
     let c = open_in_bin file_path in
     let s = String.init (in_channel_length c) (fun _ -> input_char c) in
-    close_in c;
+    close_in c ;
     s
   with _ ->
-    location_errorf ~loc "[%%blob] could not find or load file %s" file_name
+    raise
+      (Location.Error
+         (Location.Error.createf ~loc
+            "[%%blob] could not find or load file %s" file_name))
 
-let mapper _config _cookies =
-  let default_mapper = Ast_mapper.default_mapper in
-  { default_mapper with
-    expr = fun mapper expr ->
-      match expr with
-      | { pexp_desc = Pexp_extension ({ txt = "blob"; loc}, pstr); _} ->
-          begin match pstr with
-            | PStr [{ pstr_desc =
-                        Pstr_eval ({ pexp_loc  = loc;
-                                     pexp_desc = Pexp_constant (Pconst_string (file_name, _, _));
-                                     _ }, _);
-                        _ }] ->
-                str (get_blob ~loc file_name)
-            | _ ->
-                location_errorf ~loc "[%%blob] accepts a string, e.g. [%%blob \"file.dat\"]"
-          end
-      | other -> default_mapper.expr mapper other
-  }
+let expand ~ctxt file_name =
+  let loc = Expansion_context.Extension.extension_point_loc ctxt in
+  Ast_builder.Default.estring ~loc (get_blob ~loc file_name)
 
-let () =
-  Driver.register ~name:"ppx_blob"
-    Versions.ocaml_411
-    mapper
+let extension =
+  Extension.V3.declare "blob" Extension.Context.expression
+    Ast_pattern.(single_expr_payload (estring __))
+    expand
+
+let rule = Ppxlib.Context_free.Rule.extension extension
+
+;;
+Driver.register_transformation ~rules:[rule] "ppx_blob"
