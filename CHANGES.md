@@ -1,3 +1,8 @@
+0.7.1 2020-09-15
+---------------------------------
+
+Use `Ast_411` from ocaml-migrate-parsetree for compatibility with new OCaml syntax (#19).
+
 0.7.0 2020-03-24
 ---------------------------------
 
