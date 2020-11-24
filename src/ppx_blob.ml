@@ -1,12 +1,12 @@
 open Ppxlib
 
+let location_errorf ~loc =
+  Format.ksprintf (fun err ->
+    raise (Ocaml_common.Location.Error (Ocaml_common.Location.error ~loc err))
+  )
+
 let find_file_path ~loc file_name =
-  let dirname =
-    let loc_fname = loc.Location.loc_start.pos_fname in
-    if Filename.is_relative loc_fname then
-      Filename.dirname (Filename.concat (Sys.getcwd ()) loc_fname)
-    else Filename.dirname loc_fname
-  in
+  let dirname = Ocaml_common.Location.absolute_path loc.Ocaml_common.Location.loc_start.pos_fname |> Filename.dirname in
   let absolute_path = Filename.concat dirname file_name in
   List.find Sys.file_exists [absolute_path; file_name]
 
@@ -15,13 +15,10 @@ let get_blob ~loc file_name =
     let file_path = find_file_path ~loc file_name in
     let c = open_in_bin file_path in
     let s = String.init (in_channel_length c) (fun _ -> input_char c) in
-    close_in c ;
+    close_in c;
     s
   with _ ->
-    raise
-      (Location.Error
-         (Location.Error.createf ~loc
-            "[%%blob] could not find or load file %s" file_name))
+    location_errorf ~loc "[%%blob] could not find or load file %s" file_name
 
 let expand ~ctxt file_name =
   let loc = Expansion_context.Extension.extension_point_loc ctxt in
