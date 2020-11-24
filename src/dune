@@ -2,4 +2,4 @@
  (name ppx_blob)
  (public_name ppx_blob)
  (kind ppx_rewriter)
- (libraries ocaml-migrate-parsetree))
+ (libraries ppxlib))
