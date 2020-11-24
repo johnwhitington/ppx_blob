@@ -1,0 +1,31 @@
+name: main
+
+on:
+  - push
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+        ocaml-version:
+          - 4.11.0
+          - 4.10.1
+          - 4.09.1
+          - 4.08.1
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use OCaml ${{ matrix.ocaml-version }}
+        uses: avsm/setup-ocaml@v1
+        with:
+          ocaml-version: ${{ matrix.ocaml-version }}
+      - run: opam pin add ppx_blob.dev . --no-action
+      - run: opam depext ppx_blob --yes --with-doc --with-test
+      - run: opam install . --deps-only --with-doc --with-test
+      - run: opam exec -- dune build @all @runtest
