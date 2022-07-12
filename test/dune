@@ -1,11 +1,5 @@
-(executable
- (name test)
- (preprocess (pps ppx_blob))
+(tests
+ (libraries alcotest)
  (preprocessor_deps (file test_file))
- (libraries alcotest))
-
-(alias
- (name runtest)
- (deps (:test test.exe))
- (action (run %{test})))
-
+ (preprocess (pps ppx_blob))
+ (names test))
