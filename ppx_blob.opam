@@ -11,7 +11,7 @@ build: [
 ]
 depends: [
   "ocaml"
-  "dune" {>= "1.6"}
+  "dune" {>= "1.11"}
   "ppxlib"
   "alcotest" {with-test}
 ]

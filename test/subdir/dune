@@ -1,5 +1,5 @@
 (tests
  (libraries alcotest)
- (preprocessor_deps (file test_file) (file subdir/test_file))
+ (preprocessor_deps (file test_file) (file ../test_file))
  (preprocess (pps ppx_blob))
  (names test))

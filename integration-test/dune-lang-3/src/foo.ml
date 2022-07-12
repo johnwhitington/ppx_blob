@@ -13,21 +13,21 @@ let () =
     List.exists Result.is_error
       [
         (* Path relative to this file *)
-        (* check ~path:"../root.inc" ~expected:"included-root"
-          ~actual:[%blob "../root.inc"]; *)
-        (* check ~path:"src.inc" ~expected:"included-src" ~actual:[%blob "src.inc"]; *)
+        check ~path:"../root.inc" ~expected:"included-root"
+          ~actual:[%blob "../root.inc"];
+        check ~path:"src.inc" ~expected:"included-src" ~actual:[%blob "src.inc"];
         (* Path relative to build directory *)
         check ~path:"root.inc" ~expected:"included-root"
           ~actual:[%blob "root.inc"];
         check ~path:"src/src.inc" ~expected:"included-src"
           ~actual:[%blob "src/src.inc"];
         (* Ambiguous path *)
-        check ~path:"common.inc" ~expected:"included-common-root" (* violates precedence *)
+        check ~path:"common.inc" ~expected:"included-common-src"
           ~actual:[%blob "common.inc"];
-        (* check ~path:"../common.inc" ~expected:"included-common-root"
-          ~actual:[%blob "../common.inc"]; *)
+        check ~path:"../common.inc" ~expected:"included-common-root"
+          ~actual:[%blob "../common.inc"];
         (* Absolute path *)
-        check ~path:"/etc/hostname" ~expected:(input_line (open_in "/etc/hostname"))
+        check ~path:"/etc/hostname" ~expected:"included-hostname"
           ~actual:[%blob "/etc/hostname"];
       ]
   then exit 1
