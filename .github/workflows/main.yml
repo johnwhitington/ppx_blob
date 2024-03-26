@@ -23,7 +23,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Use OCaml ${{ matrix.ocaml-compiler }}
         uses: ocaml/setup-ocaml@v2
         with:
@@ -32,3 +32,24 @@ jobs:
       - run: opam depext ppx_blob --yes --with-test
       - run: opam install . --deps-only --with-test
       - run: opam exec -- dune build @all @runtest
+  integration-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        test-dir:
+          - dune-lang-1
+          - dune-lang-3
+          - ocamlbuild
+          - ocamlopt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Use OCaml ${{ matrix.ocaml-compiler }}
+        uses: ocaml/setup-ocaml@v2
+        with:
+          ocaml-compiler: 4.11.x
+      - run: opam pin add ppx_blob.dev .
+      - run: opam pin add foo "integration-test/${{ matrix.test-dir }}"
+      - run: opam exec -- make clean run
+        working-directory: "integration-test/${{ matrix.test-dir }}"

@@ -1,0 +1,6 @@
+(executable
+ (name foo)
+ (preprocess (pps ppx_blob))
+ (preprocessor_deps (file ../root.inc) (file src.inc)
+                    (file ../common.inc) (file common.inc)
+                    (file ../etc/hostname) (file etc/hostname)))

@@ -1,0 +1,14 @@
+opam-version: "2.0"
+authors: "John Whitington"
+maintainer: "contact@coherentgraphics.co.uk"
+homepage: "https://github.com/johnwhitington/ppx_blob"
+dev-repo: "git+https://github.com/johnwhitington/ppx_blob.git"
+bug-reports: "https://github.com/johnwhitington/ppx_blob/issues/"
+doc: "https://johnwhitington.github.io/ppx_blob/"
+depends: [
+  "ocaml"
+  "ocamlfind"
+  "ppx_blob"
+]
+synopsis: "Test case for ppx_blob"
+description: "Test case for ppx_blob"
