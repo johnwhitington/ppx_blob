@@ -1,5 +1,8 @@
 (tests
+ (names test)
  (libraries alcotest)
- (preprocessor_deps (file test_file) (file ../test_file))
  (preprocess (pps ppx_blob))
- (names test))
+ (preprocessor_deps
+   (file ../root.inc)
+   (file ../common.inc)
+   (file sub.inc)))
