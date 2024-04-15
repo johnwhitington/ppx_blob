@@ -1,29 +1,27 @@
-ppx_blob
-========
+# ppx_blob
 
-OCaml ppx to include a binary blob from a file as a string. Writing `[%blob
-"filename"]` will replace the string with the contents of the file at
-compile time. This allows the inclusion of arbitrary, possibly compressed, data,
-without the need to respect OCaml's lexical conventions.
+This is an OCaml PPX to include a binary blob from a file as a string. Writing
+`[%blob "filename"]` will replace the string with the contents of the file at compile
+time. This allows the inclusion of arbitrary, possibly compressed, data, without the need
+to respect OCaml's lexical conventions.
 
-The filename can be relative to either the source file where `[%blob]` appears, or relative to the current working directory. If both files exist, the former takes precedence.
+The filename can be relative to either the source file where `[%blob]` appears, or
+relative to the current working directory. If both files exist, the former takes
+precedence.
 
-To build
---------
+## Integration with build systems
 
-Requires OCaml 4.02 or above.
+### Dune
 
-Run `make` in the top directory. Then run `make` in the `examples` directory.
-Now run the `quine` executable.
+Add `(preprocessor_deps (file path/to/file))` to your library or executable stanza. See
+[test/dune](test/dune) for an example. This will make sure the file is copied to the build
+directory and therefore visible to `ppx_blob`.
 
-To install
-----------
+## Development
 
-Run `make install` in the top directory once `make` has been run.
+Requirements:
 
-Integration with build systems
-------------------------------
+- OCaml 4.08+
+- Packages: see [ppx_blob.opam](ppx_blob.opam).
 
-**dune**
-
-Add `(preprocessor_deps filename)` to your filename stanza. See https://github.com/johnwhitington/ppx_blob/tree/master/test for an example. This will make sure the file is copied to the build directory and therefore visible to `ppx_blob`.
+Run `make` and `make test`.
