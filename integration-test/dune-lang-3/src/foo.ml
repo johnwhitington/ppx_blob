@@ -27,7 +27,8 @@ let () =
         check ~path:"../common.inc" ~expected:"included-common-root"
           ~actual:[%blob "../common.inc"];
         (* Absolute path *)
-        check ~path:"/etc/hostname" ~expected:"included-hostname"
+        check ~path:"/etc/hostname"
+          ~expected:(input_line (open_in "/etc/hostname"))
           ~actual:[%blob "/etc/hostname"];
       ]
   then exit 1

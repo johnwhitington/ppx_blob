@@ -1,12 +1,17 @@
 let suite = [
-    ("path relative to source file", `Quick, fun () ->
-      Alcotest.(check string) "file contents" "test/subdir/test_file\n" [%blob "test_file"]
-    );
-
-    ("path relative to source file (parent dir)", `Quick, fun () ->
-      Alcotest.(check string) "file contents" "test/test_file\n" [%blob "../test_file"]
-    );
-  ]
+  ("relative to source file: root", `Quick, fun () ->
+    Alcotest.(check string) "blob" "included-root\n" [%blob "../root.inc"]
+  );
+  ("relative to source file: subdir", `Quick, fun () ->
+    Alcotest.(check string) "blob" "included-sub\n" [%blob "../subdir/sub.inc"]
+  );
+  ("relative to build directory: root", `Quick, fun () ->
+    Alcotest.(check string) "blob" "included-root\n" [%blob "test/root.inc"]
+  );
+  ("relative to build directory: subdir", `Quick, fun () ->
+    Alcotest.(check string) "blob" "included-sub\n" [%blob "test/subdir/sub.inc"]
+  );
+]
 
 let () =
   Alcotest.run "ppx_blob" [

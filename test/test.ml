@@ -1,9 +1,18 @@
 let suite = [
-  ("path relative to source file", `Quick, fun () ->
-    Alcotest.(check string) "file contents" "test/test_file\n" [%blob "test_file"]
+  ("relative to source file: root", `Quick, fun () ->
+    Alcotest.(check string) "blob" "included-root\n" [%blob "root.inc"]
   );
-  ("path relative to source file (subdir)", `Quick, fun () ->
-    Alcotest.(check string) "file contents" "test/subdir/test_file\n" [%blob "subdir/test_file"]
+  ("relative to source file: subdir", `Quick, fun () ->
+    Alcotest.(check string) "blob" "included-sub\n" [%blob "subdir/sub.inc"]
+  );
+  ("relative to build directory: root", `Quick, fun () ->
+    Alcotest.(check string) "blob" "included-root\n" [%blob "test/root.inc"]
+  );
+  ("relative to build directory: subdir", `Quick, fun () ->
+    Alcotest.(check string) "blob" "included-sub\n" [%blob "test/subdir/sub.inc"]
+  );
+  ("ambiguous path", `Quick, fun () ->
+    Alcotest.(check string) "blob" "included-common-sub\n" [%blob "test/common.inc"]
   );
 ]
 
