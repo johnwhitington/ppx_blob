@@ -1,22 +1,23 @@
-DUNE ?= dune
-
+.PHONY: all
 all:
-	$(DUNE) build @install @example
+	dune build @install @example
 
+.PHONY: test
 test:
-	$(DUNE) runtest
+	dune runtest
 
+.PHONY: clean
 clean:
-	rm -rf _build
+	dune clean
 
+.PHONY: tag
 tag:
 	dune-release tag
 
+.PHONY: distrib
 distrib:
 	dune-release distrib
 
+.PHONY: publish
 publish:
 	dune-release publish
-
-
-.PHONY: test all clean tag distrib publish
