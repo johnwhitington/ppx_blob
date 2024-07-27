@@ -12,3 +12,4 @@ depends: [
 ]
 synopsis: "Test case for ppx_blob"
 description: "Test case for ppx_blob"
+license: "Unlicense"

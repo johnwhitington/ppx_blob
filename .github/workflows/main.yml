@@ -10,9 +10,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest, ocaml: 4.08.x}
+          - {os: macos-latest, ocaml: 4.10.x}  # < OCaml 4.10 is no longer unavailable
           - {os: macos-latest, ocaml: 4.14.x}
-          - {os: macos-latest, ocaml: 5.1.x}
+          - {os: macos-latest, ocaml: 5.2.x}
           - {os: ubuntu-latest, ocaml: 4.08.x}
           - {os: ubuntu-latest, ocaml: 4.09.x}
           - {os: ubuntu-latest, ocaml: 4.10.x}
@@ -21,20 +21,19 @@ jobs:
           - {os: ubuntu-latest, ocaml: 4.13.x}
           - {os: ubuntu-latest, ocaml: 4.14.x}
           - {os: ubuntu-latest, ocaml: 5.0.x}
-          - {os: ubuntu-latest, ocaml: 5.1.x}
-          - {os: windows-latest, ocaml: 4.08.x}
-          - {os: windows-latest, ocaml: 4.14.x}
+          - {os: ubuntu-latest, ocaml: 5.2.x}
+          - {os: windows-latest, ocaml: 4.14.x}  # < OCaml 4.14 will not compile
+          - {os: windows-latest, ocaml: 5.2.x}
     runs-on: ${{ matrix.config.os }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Use OCaml ${{ matrix.config.ocaml }}
-        uses: ocaml/setup-ocaml@v2
+        uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ matrix.config.ocaml }}
-      - run: opam pin add ppx_blob.dev . --no-action
-      - run: opam depext ppx_blob --yes --with-test
-      - run: opam install . --deps-only --with-test
+      - run: opam pin add --no-action ppx_blob.dev .
+      - run: opam install --deps-only --with-test .
       - run: opam exec -- dune build @all @runtest
   integration-test:
     strategy:
@@ -50,7 +49,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Use OCaml ${{ matrix.ocaml-compiler }}
-        uses: ocaml/setup-ocaml@v2
+        uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: 4.11.x
       - run: opam pin add ppx_blob.dev .
