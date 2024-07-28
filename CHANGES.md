@@ -1,3 +1,13 @@
+0.9.0 2024-07-28
+---------------------------------
+
+- Absolute paths are no longer concatenated with the source directory to
+  form a blob candidate path: they are only treated as absolute paths.
+- Minor robustness improvements (reminder: this happens at build time):
+  - Reading is done in one pass (instead of checking for existence first).
+  - Only the first good path is queried (instead of both).
+  - Better I/O error handling.
+
 0.8.0 2024-04-04
 ---------------------------------
 
