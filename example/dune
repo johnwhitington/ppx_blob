@@ -1,7 +1,14 @@
 (executable
   (name quine)
+  (modules quine)
   (preprocess (pps ppx_blob)))
+
+(executable
+  (name dir)
+  (modules dir)
+  (preprocess (pps ppx_blob))
+  (preprocessor_deps (source_tree dir)))
 
 (alias
   (name example)
-  (deps quine.exe))
+  (deps quine.exe dir.exe))

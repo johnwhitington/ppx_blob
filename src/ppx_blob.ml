@@ -33,15 +33,30 @@ let read_file path =
   with _ ->
     None
 
+let read_path path =
+  match Sys.is_directory path with
+  | true ->
+    let l = Sys.readdir path
+    |> Array.to_list
+    |> List.filter_map (fun p -> match read_file @@ Filename.concat path p with None -> None | Some s -> Some (p,s))
+    in Some (`Dir l)
+  | false ->
+  match read_file path with
+  | None -> None
+  | Some s -> Some (`File s)
+
 let get_blob ~loc path =
-  match find_map read_file (get_candidate_paths ~loc path) with
+  match find_map read_path (get_candidate_paths ~loc path) with
   | Some blob -> blob
-  | None -> location_errorf ~loc "[%%blob] could not find or load file %s" path
+  | None -> location_errorf ~loc "[%%blob] could not find or load path %s" path
 
 let expand ~ctxt path =
   let open Ppxlib in
   let loc = Expansion_context.Extension.extension_point_loc ctxt in
-  Ast_builder.Default.estring ~loc (get_blob ~loc path)
+  let open Ast_builder.Default in
+  match get_blob ~loc path with
+  | `File s -> estring ~loc s
+  | `Dir l -> elist ~loc (l |> List.map (fun (p,s) -> pexp_tuple ~loc [estring ~loc p; estring ~loc s]))
 
 let extension =
   let open Ppxlib in
